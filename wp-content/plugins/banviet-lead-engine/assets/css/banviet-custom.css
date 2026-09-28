@@ -68,3 +68,83 @@
     z-index: 3 !important;
     color: #ffffff !important;
 }
+
+/* ==========================================================================
+   TOAST NOTIFICATION COMPONENT (BẢN VIỆT DESIGN SYSTEM)
+   ========================================================================== */
+#banviet-toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.banviet-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 320px;
+    max-width: 420px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border-radius: 12px;
+    border-left: 5px solid #2563eb;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.banviet-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.banviet-toast .toast-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: #2563eb;
+    flex-shrink: 0;
+}
+
+.banviet-toast .toast-content {
+    flex-grow: 1;
+}
+
+.banviet-toast .toast-title {
+    margin: 0 0 2px 0 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #0f172a !important;
+}
+
+.banviet-toast .toast-desc {
+    margin: 0 !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+    line-height: 1.4 !important;
+}
+
+.banviet-toast .toast-close {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+.banviet-toast .toast-close:hover {
+    color: #334155;
+}
