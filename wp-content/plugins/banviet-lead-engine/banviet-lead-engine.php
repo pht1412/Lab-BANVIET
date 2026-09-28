@@ -56,3 +56,16 @@ function banviet_dispatch_lead_to_sheets($entryId, $formData, $form) {
 }
 
 add_action('fluentform/submission_inserted', 'banviet_dispatch_lead_to_sheets', 20, 3);
+
+/**
+ * Nạp stylesheet tùy biến cho giao diện Bản Việt Education
+ */
+function banviet_enqueue_custom_styles() {
+    wp_enqueue_style(
+        'banviet-custom-styles',
+        plugins_url('assets/css/banviet-custom.css', __FILE__),
+        array(),
+        time() // Tự động đổi version sau mỗi giây: ?ver=1727513...
+    );
+}
+add_action('wp_enqueue_scripts', 'banviet_enqueue_custom_styles');

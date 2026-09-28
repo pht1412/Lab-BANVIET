@@ -1,0 +1,70 @@
+/* ==========================================================================
+   BẢN VIỆT EDUCATION - BULLETPROOF BUTTON CTA
+   ========================================================================== */
+
+/* Nhắm thẳng vào tất cả thẻ link/button nằm bên trong khối .btn-banviet */
+.btn-banviet a,
+.btn-banviet button,
+.btn-banviet .elementor-button {
+    position: relative !important;
+    overflow: hidden !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #123b78 0%, #1d4ed8 45%, #2563eb 75%, #3b82f6 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.28), 0 8px 24px rgba(37, 99, 235, 0.20) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, background 0.3s ease !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+}
+
+/* Hiệu ứng Shimmer quét sáng */
+.btn-banviet a::before,
+.btn-banviet button::before,
+.btn-banviet .elementor-button::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -120% !important;
+    width: 65% !important;
+    height: 100% !important;
+    background: linear-gradient(
+        110deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.04) 25%,
+        rgba(255, 255, 255, 0.28) 50%,
+        rgba(255, 255, 255, 0.04) 75%,
+        transparent 100%
+    ) !important;
+    transform: skewX(-22deg) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+/* Hover State */
+.btn-banviet a:hover::before,
+.btn-banviet button:hover::before,
+.btn-banviet .elementor-button:hover::before {
+    left: 140% !important;
+    transition: left 0.75s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-banviet a:hover,
+.btn-banviet button:hover,
+.btn-banviet .elementor-button:hover {
+    background: linear-gradient(135deg, #17478c 0%, #2563eb 45%, #3b82f6 75%, #60a5fa 100%) !important;
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 8px 18px rgba(29, 78, 216, 0.32), 0 14px 32px rgba(37, 99, 235, 0.30) !important;
+}
+
+/* Ép chữ và icon bên trong luôn hiển thị màu trắng rõ nét */
+.btn-banviet a *,
+.btn-banviet button *,
+.btn-banviet .elementor-button * {
+    position: relative !important;
+    z-index: 3 !important;
+    color: #ffffff !important;
+}

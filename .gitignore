@@ -30,7 +30,23 @@ wp-config.php
 # ==========================================
 !/wp-content/plugins/banviet-lead-engine/
 
-# Bỏ qua file rác của hệ điều hành & IDE
+# ==========================================
+# 5. BỘ KIỂM THỬ TỰ ĐỘNG & NODE RUNTIME (QC SUITE)
+# ==========================================
+# Chặn toàn bộ dependencies nặng hàng trăm MB
+node_modules/
+**/node_modules/
+.npm/
+
+# Bỏ qua log debug và cache của Jest
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.jest-cache/
+
+# ==========================================
+# 6. FILE RÁC CỦA HỆ ĐIỀU HÀNH & IDE
+# ==========================================
 .DS_Store
 Thumbs.db
 .vscode/
