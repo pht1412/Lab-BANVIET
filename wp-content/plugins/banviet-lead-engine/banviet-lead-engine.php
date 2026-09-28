@@ -33,7 +33,7 @@ function banviet_dispatch_lead_to_sheets($entryId, $formData, $form) {
     }
 
     // Bỏ qua nếu chưa cấu hình URL Webhook thực tế
-    if (strpos(BANVIET_GOOGLE_WEBHOOK_URL, 'THAY_THE_URL') !== false) {
+    if (strpos(BANVIET_GOOGLE_WEBHOOK_URL, 'https://script.google.com/macros/s/AKfycbyX79lcRGbl27ZNKnpakdhYpqQhsflFlMz49W31UAp6NlY5v5lY677-NaGMRSJzWPA9/exec') !== false) {
         error_log('[Bản Việt Lead Engine] Cảnh báo: Webhook URL chưa được cấu hình.');
         return;
     }
