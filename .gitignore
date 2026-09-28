@@ -1,0 +1,37 @@
+# ==========================================
+# 1. BỎ QUA MÃ NGUỒN LÕI WORDPRESS & CẤU HÌNH
+# ==========================================
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/xmlrpc.php
+/index.php
+/license.txt
+/readme.html
+wp-config.php
+
+# ==========================================
+# 2. BỎ QUA TÀI NGUYÊN ĐỘNG & CACHE
+# ==========================================
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/cache/
+/wp-content/wflogs/
+*.log
+
+# ==========================================
+# 3. BỎ QUA TOÀN BỘ THEME & PLUGIN MẶC ĐỊNH
+# ==========================================
+/wp-content/themes/*
+/wp-content/plugins/*
+
+# ==========================================
+# 4. CHỈ THEO DÕI CÁC TÀI NGUYÊN CUSTOM CỦA BẢN VIỆT
+# ==========================================
+!/wp-content/plugins/banviet-lead-engine/
+
+# Bỏ qua file rác của hệ điều hành & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
