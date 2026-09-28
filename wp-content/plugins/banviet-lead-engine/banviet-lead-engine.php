@@ -2,43 +2,37 @@
 /**
  * Plugin Name:       Bản Việt Lead Engine
  * Plugin URI:        https://banviet.edu.vn
- * Description:       Module xử lý Data Pipeline bắt sự kiện nộp đơn học viên và đồng bộ thời gian thực sang Google Sheets qua Webhook.
- * Version:           1.0.0
+ * Description:       Module xử lý Data Pipeline đồng bộ lead sang Google Sheets.
+ * Version:           1.0.3
  * Author:            Le Hong Phat
- * Author URI:        https://linkedin.com/in/le-hong-phat-dev
- * License:           GPL-2.0+
- * Text Domain:       banviet-lead-engine
  */
 
-// 1. SECURITY GUARD: Chặn thực thi file trực tiếp từ URL trình duyệt
 if (!defined('ABSPATH')) {
-    exit; // Thoát ngay nếu bị gọi trực tiếp ngoài môi trường nạp của WordPress
+    exit;
 }
 
-// 2. KHAI BÁO CẤU HÌNH NGHIỆP VỤ (CONFIG CONSTANTS)
+// 1. CẤU HÌNH NGHIỆP VỤ
 define('BANVIET_TARGET_FORM_ID', 3);
-define('BANVIET_GOOGLE_WEBHOOK_URL', 'https://script.google.com/macros/s/THAY_THE_URL_CUA_BAN_O_DAY/exec');
+define('BANVIET_GOOGLE_WEBHOOK_URL', 'https://script.google.com/macros/s/AKfycbyX79lcRGbl27ZNKnpakdhYpqQhsflFlMz49W31UAp6NlY5v5lY677-NaGMRSJzWPA9/exec');
 
-/**
- * Hook lắng nghe sự kiện Fluent Forms lưu bản ghi thành công
- *
- * @param int   $entryId  ID của bản ghi nộp đơn
- * @param array $formData Dữ liệu thô từ form người dùng nộp
- * @param object $form     Thực thể Form metadata
- */
 function banviet_dispatch_lead_to_sheets($entryId, $formData, $form) {
-    // Chỉ kích hoạt cho đúng Form tuyển sinh (ID = 3)
-    if ((int)$form->id !== BANVIET_TARGET_FORM_ID) {
+    // 2. Bóc tách Form ID an toàn
+    $formId = 0;
+    if (is_object($form) && isset($form->id)) {
+        $formId = (int) $form->id;
+    } elseif (is_array($form) && isset($form['id'])) {
+        $formId = (int) $form['id'];
+    }
+
+    if ($formId !== BANVIET_TARGET_FORM_ID) {
         return;
     }
 
-    // Bỏ qua nếu chưa cấu hình URL Webhook thực tế
-    if (strpos(BANVIET_GOOGLE_WEBHOOK_URL, 'https://script.google.com/macros/s/AKfycbyX79lcRGbl27ZNKnpakdhYpqQhsflFlMz49W31UAp6NlY5v5lY677-NaGMRSJzWPA9/exec') !== false) {
-        error_log('[Bản Việt Lead Engine] Cảnh báo: Webhook URL chưa được cấu hình.');
+    if (empty(BANVIET_GOOGLE_WEBHOOK_URL)) {
         return;
     }
 
-    // 3. SANITIZATION THEO DATA CONTRACT ĐÃ THỐNG NHẤT
+    // 3. Chuẩn hóa Payload theo Data Contract
     $payload = array(
         'full_name' => isset($formData['full_name']) ? sanitize_text_field($formData['full_name']) : '',
         'phone'     => isset($formData['phone'])     ? sanitize_text_field($formData['phone'])     : '',
@@ -46,25 +40,19 @@ function banviet_dispatch_lead_to_sheets($entryId, $formData, $form) {
         'course'    => isset($formData['course'])    ? sanitize_text_field($formData['course'])    : '',
     );
 
-    // 4. BẮN ASYNCHRONOUS HTTP POST REQUEST
-    $response = wp_remote_post(BANVIET_GOOGLE_WEBHOOK_URL, array(
+    // 4. Bắn HTTP POST Request sang Google Apps Script
+    // Bỏ httpversion để cURL tự dùng HTTP/1.1, không theo dõi redirect sâu để tránh lỗi GFE 400
+    wp_remote_post(BANVIET_GOOGLE_WEBHOOK_URL, array(
         'method'      => 'POST',
         'timeout'     => 15,
-        'redirection' => 5,
-        'httpversion' => '1.0',
-        'blocking'    => false, // Non-blocking: tối ưu UX, không bắt client đợi phản hồi
+        'redirection' => 0, // Không follow redirect vì Google đã ghi dữ liệu vào Sheet ở lượt POST đầu tiên
+        'blocking'    => false, // Fire-and-forget: Client nộp xong không phải chờ máy chủ phản hồi
         'headers'     => array(
             'Content-Type' => 'application/json; charset=utf-8',
         ),
         'body'        => wp_json_encode($payload),
         'data_format' => 'body',
     ));
-
-    // Ghi log kiểm tra nếu gặp lỗi hệ thống (Dành cho QC/Dev debug)
-    if (is_wp_error($response)) {
-        error_log('[Bản Việt Lead Engine] Lỗi kết nối Webhook: ' . $response->get_error_message());
-    }
 }
 
-// Đăng ký hàm với Action Hook của Fluent Forms
 add_action('fluentform/submission_inserted', 'banviet_dispatch_lead_to_sheets', 20, 3);
